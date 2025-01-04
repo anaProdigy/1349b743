@@ -1,5 +1,5 @@
 import React from "react";
-import { cn } from "../utils/cn";
+import { cn } from "../lib/utils.ts";
 
 const Tabs = ({ tabs, activeTab, setActiveTab }) => {
   return (

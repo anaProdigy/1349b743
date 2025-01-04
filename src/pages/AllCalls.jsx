@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import CallCard from "../components/CallCard";
-import { fetchActivities, updateCallArchiveStatus } from "../services/api";
+import { fetchActivities, updateCallArchiveStatus } from "../api/utils";
 
 const AllCalls = () => {
   const [calls, setCalls] = useState([]);
@@ -11,6 +11,13 @@ const AllCalls = () => {
       setLoading(true);
       try {
         const data = await fetchActivities();
+         console.log(
+           "DATA in CALLS raw",
+           data);
+        console.log(
+          "DATA in CALLS",
+          data.filter((call) => !call.is_archived)
+        );
         setCalls(data.filter((call) => !call.is_archived));
       } catch (error) {
         console.error("Error fetching calls:", error);
