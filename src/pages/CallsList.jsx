@@ -91,13 +91,14 @@ const CallsList = ({activeTab}) => {
         </button>
       </div>
       {loading ? (
-        <p>Loading...</p>
+        <div className="flex flex-col items-center justify-center space-y-4">
+          <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+          <p className="text-blue-500 font-medium">Loading, please wait...</p>
+        </div>
       ) : Object.keys(groupedCalls).length > 0 ? (
         Object.entries(groupedCalls).map(([date, calls]) => (
           <div key={date} className="mb-6">
-            <h3 className="text-lg text-gray-500 mb-2 text-center">
-              {date}
-            </h3>
+            <h3 className="text-lg text-gray-500 mb-2 text-center">{date}</h3>
             {calls.map((call) => (
               <CallCard
                 key={call.id}
@@ -110,7 +111,9 @@ const CallsList = ({activeTab}) => {
           </div>
         ))
       ) : (
-        <p>No {activeTab === "all" ? "calls" : "archived calls"} available.</p>
+        <p className="text-center">
+          No {activeTab === "all" ? "calls" : "archived calls"} available.
+        </p>
       )}
     </div>
   );

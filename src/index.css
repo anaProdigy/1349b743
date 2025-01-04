@@ -9,3 +9,7 @@ body {
 code {
   @apply font-mono; 
 }
+
+* {
+  @apply transition-colors duration-300 ease-in-out;
+}

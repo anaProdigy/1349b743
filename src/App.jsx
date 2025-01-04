@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Tabs from "./components/Tabs.jsx";
 import CallsList from "./pages/CallsList.jsx";
-import Header from "./Header.jsx";
+import Header from "./components/Header.jsx";
 import "./index.css";
 function App() {
   const [activeTab, setActiveTab] = useState("all");
