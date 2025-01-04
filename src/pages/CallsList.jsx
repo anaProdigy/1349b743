@@ -30,7 +30,12 @@ const CallsList = ({activeTab}) => {
 
     const groupCallsByDate = () => {
       return calls.reduce((group, call) => {
-        const date = new Date(call.created_at).toLocaleDateString();
+        const date = new Date(call.created_at).toLocaleDateString("en-US", {
+          weekday: "long", // Full day name, e.g., "Monday"
+          year: "numeric", // Full year, e.g., "2024"
+          month: "long", // Full month name, e.g., "January"
+          day: "numeric", // Day of the month, e.g., "1"
+        });
         if (!group[date]) group[date] = [];
         group[date].push(call);
         return group;
@@ -90,7 +95,9 @@ const CallsList = ({activeTab}) => {
       ) : Object.keys(groupedCalls).length > 0 ? (
         Object.entries(groupedCalls).map(([date, calls]) => (
           <div key={date} className="mb-6">
-            <h3 className="text-lg font-semibold text-gray-700 mb-2">{date}</h3>
+            <h3 className="text-lg text-gray-500 mb-2 text-center">
+              {date}
+            </h3>
             {calls.map((call) => (
               <CallCard
                 key={call.id}

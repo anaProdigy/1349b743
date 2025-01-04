@@ -25,15 +25,23 @@ const CallCard = ({ call, onArchiveToggle }) => {
         <div className="flex items-center gap-2">
           {getCallIcon()}
           <div>
-            <p className="font-semibold">
+            <p
+              className={` ${
+                isExpanded ? "font-semibold text-lg" : "font-normal text-sm"
+              }`}
+            >
               {direction === "inbound" ? from : to || "Unknown"}
-            </p>
-            <p className="text-sm text-gray-500">
-              {new Date(created_at).toLocaleString()}
             </p>
           </div>
         </div>
-        <span className="text-gray-500">{Math.ceil(duration / 60)} mins</span>
+        <p className="text-sm text-gray-500">
+          {new Date(created_at).toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: true,
+          })}
+        </p>
+        {/* <span className="text-gray-500">{Math.ceil(duration / 60)} mins</span> */}
       </div>
 
       {/* Expanded Details */}
@@ -42,21 +50,15 @@ const CallCard = ({ call, onArchiveToggle }) => {
           initial={{ height: 0 }}
           animate={{ height: "auto" }}
           exit={{ height: 0 }}
-          className="bg-gray-50 p-4"
+          className=" p-4"
         >
-          <p>
-            <strong>From:</strong> {from}
-          </p>
-          <p>
-            <strong>To:</strong> {to || "Unknown"}
-          </p>
-          <p>
-            <strong>Duration:</strong> {Math.ceil(duration / 60)} mins
-          </p>
-          <p>
-            <strong>Date:</strong> {new Date(created_at).toLocaleString()}
-          </p>
-          <div className="flex justify-end mt-4">
+          <div className="flex justify-between">
+            <p>
+              {" "}
+              {direction === "inbound"
+                ? "Incoming Call"
+                : "Outgoing Call"}, {Math.ceil(duration / 60)} mins
+            </p>
             <button
               onClick={() => onArchiveToggle(id, call.is_archived)}
               className={`py-1 px-4 rounded ${
