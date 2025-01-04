@@ -11,3 +11,9 @@ export const fetchActivities = async () => {
 export const updateCallArchiveStatus = async (id, isArchived) => {
   await axios.patch(`${BASE_URL}/activities/${id}`, { is_archived: isArchived });
 };
+
+export const fetchCallDetails = async (id) => {
+  const response = await fetch(`${BASE_URL}/activities/${id}`);
+  if (!response.ok) throw new Error("Failed to fetch call details");
+  return await response.json();
+};

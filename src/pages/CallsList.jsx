@@ -15,7 +15,10 @@ const CallsList = ({activeTab}) => {
           activeTab === "all"
             ? data.filter((call) => !call.is_archived)
             : data.filter((call) => call.is_archived);
-        setCalls(filteredCalls);
+        const sortedCalls = filteredCalls.sort(
+          (a, b) => new Date(b.created_at) - new Date(a.created_at)
+        );
+        setCalls(sortedCalls);
       } catch (error) {
         console.error("Error fetching calls:", error);
       } finally {
@@ -24,6 +27,17 @@ const CallsList = ({activeTab}) => {
     };
     fetchData();
   }, [activeTab]);
+
+    const groupCallsByDate = () => {
+      return calls.reduce((group, call) => {
+        const date = new Date(call.created_at).toLocaleDateString();
+        if (!group[date]) group[date] = [];
+        group[date].push(call);
+        return group;
+      }, {});
+    };
+
+    const groupedCalls = groupCallsByDate();
 
     const handleArchiveAll = async () => {
       try {
@@ -63,26 +77,30 @@ const CallsList = ({activeTab}) => {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-bold text-gray-800">
-          {activeTab === "all" ? "All Calls" : "Archived Calls"}
-        </h2>
+      <div className="flex justify-center items-center mb-4">
         <button
           onClick={activeTab === "all" ? handleArchiveAll : handleUnarchiveAll}
-          className="bg-blue-600 text-white py-1 px-3 rounded hover:bg-blue-700"
+          className="bg-gray-800 text-white py-2 px-4 rounded hover:bg-gray-700"
         >
           {activeTab === "all" ? "Archive All" : "Unarchive All"}
         </button>
       </div>
       {loading ? (
         <p>Loading...</p>
-      ) : calls.length > 0 ? (
-        calls.map((call) => (
-          <CallCard
-            key={call.id}
-            call={call}
-            onArchive={() => handleArchiveToggle(call.id)}
-          />
+      ) : Object.keys(groupedCalls).length > 0 ? (
+        Object.entries(groupedCalls).map(([date, calls]) => (
+          <div key={date} className="mb-6">
+            <h3 className="text-lg font-semibold text-gray-700 mb-2">{date}</h3>
+            {calls.map((call) => (
+              <CallCard
+                key={call.id}
+                call={call}
+                onArchiveToggle={(id, isArchived) =>
+                  handleArchiveToggle(id, isArchived)
+                }
+              />
+            ))}
+          </div>
         ))
       ) : (
         <p>No {activeTab === "all" ? "calls" : "archived calls"} available.</p>
