@@ -6,19 +6,14 @@ const CallCard = ({ call, onArchiveToggle }) => {
   const { id, from, to, created_at, duration, call_type, direction } = call;
 
   const toggleExpand = () => setIsExpanded(!isExpanded);
- const getCallIcon = () => {
-   if (call_type === "missed")
-     return <span className="text-error-light dark:text-error-dark">🔴</span>;
-   if (direction === "inbound")
-     return (
-       <span className="text-success-light dark:text-success-dark">📞</span>
-     );
-   if (direction === "outbound")
-     return (
-       <span className="text-primary-light dark:text-primary-dark">📤</span>
-     );
-   return null;
- };
+  const getCallIcon = () => {
+    if (call_type === "missed") return <span className="text-red-500">🔴</span>;
+    if (direction === "inbound")
+      return <span className="text-green-500">📞</span>;
+    if (direction === "outbound")
+      return <span className="text-blue-500">📤</span>;
+    return null;
+  };
 
   return (
     <div className="bg-white rounded shadow mb-2 overflow-hidden">

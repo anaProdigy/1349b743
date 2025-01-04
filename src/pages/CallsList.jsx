@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
+import toast from "react-hot-toast";
 import CallCard from "../components/CallCard";
 import { fetchActivities, updateCallArchiveStatus } from "../api/utils";
 
-const CallsList = ({activeTab}) => {
+const CallsList = ({ activeTab }) => {
   const [calls, setCalls] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -28,45 +29,45 @@ const CallsList = ({activeTab}) => {
     fetchData();
   }, [activeTab]);
 
-    const groupCallsByDate = () => {
-      return calls.reduce((group, call) => {
-        const date = new Date(call.created_at).toLocaleDateString("en-US", {
-          weekday: "long", // Full day name, e.g., "Monday"
-          year: "numeric", // Full year, e.g., "2024"
-          month: "long", // Full month name, e.g., "January"
-          day: "numeric", // Day of the month, e.g., "1"
-        });
-        if (!group[date]) group[date] = [];
-        group[date].push(call);
-        return group;
-      }, {});
-    };
+  const groupCallsByDate = () => {
+    return calls.reduce((group, call) => {
+      const date = new Date(call.created_at).toLocaleDateString("en-US", {
+        weekday: "long", // Full day name, e.g., "Monday"
+        year: "numeric", // Full year, e.g., "2024"
+        month: "long", // Full month name, e.g., "January"
+        day: "numeric", // Day of the month, e.g., "1"
+      });
+      if (!group[date]) group[date] = [];
+      group[date].push(call);
+      return group;
+    }, {});
+  };
 
-    const groupedCalls = groupCallsByDate();
+  const groupedCalls = groupCallsByDate();
 
-    const handleArchiveAll = async () => {
-      try {
-        for (const call of calls) {
-          await updateCallArchiveStatus(call.id, true);
-        }
-        setCalls([]);
-        alert("All calls archived successfully!");
-      } catch (error) {
-        console.error("Error archiving all calls:", error);
+  const handleArchiveAll = async () => {
+    try {
+      for (const call of calls) {
+        await updateCallArchiveStatus(call.id, true);
       }
-    };
+      setCalls([]);
+      toast.success("All calls archived successfully!");
+    } catch (error) {
+      console.error("Error archiving all calls:", error);
+    }
+  };
 
-    const handleUnarchiveAll = async () => {
-      try {
-        for (const call of calls) {
-          await updateCallArchiveStatus(call.id, false);
-        }
-        setCalls([]);
-        alert("All calls unarchived successfully!");
-      } catch (error) {
-        console.error("Error unarchiving all calls:", error);
+  const handleUnarchiveAll = async () => {
+    try {
+      for (const call of calls) {
+        await updateCallArchiveStatus(call.id, false);
       }
-    };
+      setCalls([]);
+      toast.success("All calls unarchived successfully!");
+    } catch (error) {
+      console.error("Error unarchiving all calls:", error);
+    }
+  };
 
   const handleArchiveToggle = async (id, isArchived) => {
     try {
@@ -90,12 +91,14 @@ const CallsList = ({activeTab}) => {
           {activeTab === "all" ? "Archive All" : "Unarchive All"}
         </button>
       </div>
-      {loading ? (
+      {
+      loading ? (
         <div className="flex flex-col items-center justify-center space-y-4">
           <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
           <p className="text-blue-500 font-medium">Loading, please wait...</p>
         </div>
-      ) : Object.keys(groupedCalls).length > 0 ? (
+      ) : 
+      Object.keys(groupedCalls).length > 0 ? (
         Object.entries(groupedCalls).map(([date, calls]) => (
           <div key={date} className="mb-6">
             <h3 className="text-lg text-gray-500 mb-2 text-center">{date}</h3>

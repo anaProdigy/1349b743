@@ -1,6 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
+import { FiSettings } from "react-icons/fi";
+import { motion, AnimatePresence } from "framer-motion";
+import Settings from "./Settings";
 
 const Header = () => {
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const toggleSettings = () => setIsSettingsOpen(!isSettingsOpen);
+
   return (
     <header className="flex items-center justify-between px-6 py-4 bg-white shadow">
       <svg
@@ -39,6 +45,33 @@ const Header = () => {
           />
         </g>
       </svg>
+      <button
+        onClick={toggleSettings}
+        aria-label="Settings"
+        className="text-gray-500 hover:text-gray-800 dark:text-gray-300 dark:hover:text-gray-100 transition-all"
+      >
+        <FiSettings className="h-6 w-6" />
+      </button>
+
+      <AnimatePresence>
+        {isSettingsOpen && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-70"
+          >
+            <motion.div
+              initial={{ y: "-50%", opacity: 0 }}
+              animate={{ y: "0%", opacity: 1 }}
+              exit={{ y: "-50%", opacity: 0 }}
+              className="bg-white dark:bg-gray-900 rounded-lg p-6 shadow-lg max-w-sm w-full"
+            >
+              <Settings onClose={toggleSettings} />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 };
