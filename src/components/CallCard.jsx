@@ -1,6 +1,6 @@
 import React from "react";
 
-const CallCard = ({ call, onArchive, onUnarchive }) => {
+const CallCard = ({ call, onArchiveToggle }) => {
   const { from, to, created_at, duration, call_type } = call;
 
   return (
@@ -25,22 +25,14 @@ const CallCard = ({ call, onArchive, onUnarchive }) => {
         >
           {call_type}
         </span>
-        {onArchive && (
+        <div className="flex justify-end mt-2">
           <button
-            onClick={onArchive}
-            className="ml-4 px-3 py-1 bg-blue-500 text-white rounded"
+            onClick={() => onArchiveToggle(call.id, call.is_archived)}
+            className="py-1 px-3 rounded text-white bg-blue-600 hover:bg-blue-700"
           >
-            Archive
+            {call.is_archived ? "Unarchive" : "Archive"}
           </button>
-        )}
-        {onUnarchive && (
-          <button
-            onClick={onUnarchive}
-            className="ml-4 px-3 py-1 bg-gray-500 text-white rounded"
-          >
-            Unarchive
-          </button>
-        )}
+        </div>
       </div>
     </div>
   );
