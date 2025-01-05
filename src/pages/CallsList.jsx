@@ -69,39 +69,74 @@ const CallsList = ({ activeTab }) => {
     }
   };
 
-  const handleArchiveToggle = async (id, isArchived) => {
-    try {
-      await updateCallArchiveStatus(id, !isArchived);
-      setCalls((prevCalls) => prevCalls.filter((call) => call.id !== id));
-    } catch (error) {
-      console.error(
-        `Error ${isArchived ? "unarchiving" : "archiving"} call with ID ${id}:`,
-        error
-      );
-    }
-  };
+  // const handleArchiveToggle = async (id, isArchived) => {
+  //   try {
+  //     await updateCallArchiveStatus(id, !isArchived);
+  //     setCalls((prevCalls) => prevCalls.filter((call) => call.id !== id));
+  //   } catch (error) {
+  //     console.error(
+  //       `Error ${isArchived ? "unarchiving" : "archiving"} call with ID ${id}:`,
+  //       error
+  //     );
+  //   }
+  // };
+
+   const handleArchiveToggle = async (id, isArchived) => {
+     try {
+       await updateCallArchiveStatus(id, !isArchived); // Update the archive status on the backend
+       setCalls((prevCalls) => prevCalls.filter((call) => call.id !== id)); // Optimistically update the UI
+       toast.success(isArchived ? "Call unarchived." : "Call archived.", {
+         position: "bottom-center",
+         autoClose: 3000, // Close after 3 seconds
+         hideProgressBar: true,
+         closeOnClick: true,
+         pauseOnHover: false,
+         draggable: false,
+         theme: "colored",
+       });
+     } catch (error) {
+       console.error(
+         `Error ${
+           isArchived ? "unarchiving" : "archiving"
+         } call with ID ${id}:`,
+         error
+       );
+       toast.error("Something went wrong. Please try again.", {
+         position: "bottom-center",
+         autoClose: 3000,
+         hideProgressBar: true,
+         closeOnClick: true,
+         pauseOnHover: false,
+         draggable: false,
+         theme: "colored",
+       });
+     }
+   };
 
   return (
-    <div>
-      <div className="flex justify-center items-center mb-4">
+    <div className="p-4">
+      <div className="flex justify-center items-center mb-6">
         <button
           onClick={activeTab === "all" ? handleArchiveAll : handleUnarchiveAll}
-          className="bg-gray-800 text-white py-2 px-4 rounded hover:bg-gray-700"
+          className="px-6 py-3 rounded-lg font-semibold text-white bg-primary-light dark:bg-primary-dark hover:bg-hover-light dark:hover:bg-hover-dark transition-all shadow-md focus:outline-none focus:ring-2 focus:ring-primary-light dark:focus:ring-primary-dark focus:ring-offset-2 dark:focus:ring-offset-background-dark"
         >
           {activeTab === "all" ? "Archive All" : "Unarchive All"}
         </button>
       </div>
-      {
-      loading ? (
+
+      {loading ? (
         <div className="flex flex-col items-center justify-center space-y-4">
-          <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-blue-500 font-medium">Loading, please wait...</p>
+          <div className="w-12 h-12 border-4 border-primary-light dark:border-primary-dark border-t-transparent rounded-full animate-spin"></div>
+          <p className="text-primary-light dark:text-primary-dark font-medium">
+            Loading, please wait...
+          </p>
         </div>
-      ) : 
-      Object.keys(groupedCalls).length > 0 ? (
+      ) : Object.keys(groupedCalls).length > 0 ? (
         Object.entries(groupedCalls).map(([date, calls]) => (
           <div key={date} className="mb-6">
-            <h3 className="text-lg text-gray-500 mb-2 text-center">{date}</h3>
+            <h3 className="text-lg text-text-secondary-light dark:text-text-secondary-dark mb-2 text-center">
+              {date}
+            </h3>
             {calls.map((call) => (
               <CallCard
                 key={call.id}
@@ -114,7 +149,7 @@ const CallsList = ({ activeTab }) => {
           </div>
         ))
       ) : (
-        <p className="text-center">
+        <p className="text-center text-text-secondary-light dark:text-text-secondary-dark">
           No {activeTab === "all" ? "calls" : "archived calls"} available.
         </p>
       )}

@@ -1,47 +1,114 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+import {
+  FiPhoneIncoming,
+  FiPhoneOutgoing,
+  FiPhoneMissed,
+  FiArchive,
+  FiRefreshCw,
+} from "react-icons/fi";
 
 const CallCard = ({ call, onArchiveToggle }) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const { id, from, to, created_at, duration, call_type, direction } = call;
+  const [isHovered, setIsHovered] = useState(false);
+
+  const {
+    id,
+    from,
+    to,
+    created_at,
+    duration,
+    call_type,
+    direction,
+    is_archived,
+  } = call;
 
   const toggleExpand = () => setIsExpanded(!isExpanded);
   const getCallIcon = () => {
-    if (call_type === "missed") return <span className="text-red-500">🔴</span>;
+    if (call_type === "missed")
+      return (
+        <FiPhoneMissed
+          className="text-accent-missed-light dark:text-accent-missed-dark text-lg"
+        />
+      );
     if (direction === "inbound")
-      return <span className="text-green-500">📞</span>;
+      return (
+        <FiPhoneIncoming
+          className="text-accent-incoming-light dark:text-accent-incoming-dark text-lg"
+        />
+      );
     if (direction === "outbound")
-      return <span className="text-blue-500">📤</span>;
+      return (
+        <FiPhoneOutgoing
+          className="text-primary-light dark:text-primary-dark text-lg"
+        />
+      );
     return null;
   };
 
   return (
-    <div className="bg-white rounded shadow mb-2 overflow-hidden">
+    <motion.div
+      className="relative bg-card-light dark:bg-card-dark rounded-lg shadow-md mb-6 p-1 md:p-2 border border-border-light dark:border-border-dark transition-transform transform hover:scale-105 hover:shadow-lg"
+      whileHover={{ scale: 1.02 }}
+      style={{ transition: "transform 0.2s ease-in-out" }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
       {/* Call Summary */}
       <div
         className="flex justify-between items-center p-4 cursor-pointer"
-        onClick={toggleExpand}
+        onClick={(e) => {
+          if (!e.target.closest(".archive-button")) {
+            toggleExpand();
+          }
+        }}
       >
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
+          {/* Call Icon */}
           {getCallIcon()}
           <div>
             <p
-              className={` ${
+              className={`${
                 isExpanded ? "font-semibold text-lg" : "font-normal text-sm"
-              }`}
+              } text-text-primary-light dark:text-text-primary-dark`}
             >
               {direction === "inbound" ? from : to || "Unknown"}
             </p>
           </div>
         </div>
-        <p className="text-sm text-gray-500">
-          {new Date(created_at).toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit",
-            hour12: true,
-          })}
-        </p>
-        {/* <span className="text-gray-500">{Math.ceil(duration / 60)} mins</span> */}
+
+        {/* Show Archive Icon or Duration */}
+        {isHovered || isExpanded ? (
+          <motion.button
+            whileHover={{ scale: 1.1 }}
+            onClick={(e) => {
+              e.stopPropagation();
+              onArchiveToggle(id, is_archived);
+              setIsHovered(false); // Reset hover state immediately after click
+              setTimeout(() => setIsHovered(true), 0); // Reapply hover to refresh icon
+            }}
+            className={`archive-button flex items-center gap-2 text-white px-3 py-2 rounded-full shadow-lg transition-transform ${
+              is_archived
+                ? "bg-teal-600 hover:bg-teal-400 dark:bg-teal-600 dark:hover:bg-teal-400"
+                : "bg-primary-light hover:bg-primary-dark dark:bg-primary-dark dark:hover:bg-primary-light"
+            }`}
+            style={{
+              zIndex: 10,
+            }}
+            aria-label={is_archived ? "Unarchive" : "Archive"}
+            title={is_archived ? "Unarchive" : "Archive"}
+          >
+            {is_archived ? (
+              <FiRefreshCw className="text-white" />
+            ) : (
+              <FiArchive className="text-white" />
+            )}
+          </motion.button>
+        ) : (
+          <p className="text-sm text-text-secondary-light dark:text-text-secondary-dark">
+            {Math.ceil(duration / 60)} mins
+          </p>
+        )}
       </div>
 
       {/* Expanded Details */}
@@ -50,12 +117,14 @@ const CallCard = ({ call, onArchiveToggle }) => {
           initial={{ height: 0 }}
           animate={{ height: "auto" }}
           exit={{ height: 0 }}
-          className=" p-4"
+          className="p-4"
         >
-          <div className="flex justify-between">
-            <p>
+          <div className="flex justify-between items-start">
+            <p className="text-text-secondary-light dark:text-text-secondary-dark">
               {call_type === "missed" ? (
-                <span className="text-red-500 font-semibold">Missed Call</span>
+                <span className="text-error-light dark:text-error-dark font-semibold">
+                  Missed Call
+                </span>
               ) : (
                 <>
                   {direction === "inbound" ? "Incoming Call" : "Outgoing Call"},{" "}
@@ -63,44 +132,10 @@ const CallCard = ({ call, onArchiveToggle }) => {
                 </>
               )}
             </p>
-            <button
-              onClick={() => onArchiveToggle(id, call.is_archived)}
-              className={`py-2 px-4 flex items-center gap-2 rounded-lg shadow-md transition-transform transform hover:scale-105 ${
-                call.is_archived
-                  ? "bg-gradient-to-r from-gray-400 to-gray-500 hover:from-gray-500 hover:to-gray-600"
-                  : "bg-gradient-to-r from-green-400 to-green-500 hover:from-green-500 hover:to-green-600"
-              } text-white font-medium`}
-            >
-              {call.is_archived ? (
-                <>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                  >
-                    <path d="M6 3H18C19.1 3 20 3.9 20 5V19C20 20.1 19.1 21 18 21H6C4.9 21 4 20.1 4 19V5C4 3.9 4.9 3 6 3ZM11 12V8H13V12H16L12 16L8 12H11Z" />
-                  </svg>
-                  Unarchive
-                </>
-              ) : (
-                <>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                  >
-                    <path d="M6 3H18C19.1 3 20 3.9 20 5V19C20 20.1 19.1 21 18 21H6C4.9 21 4 20.1 4 19V5C4 3.9 4.9 3 6 3ZM12 8L8 12H11V16H13V12H16L12 8Z" />
-                  </svg>
-                  Archive
-                </>
-              )}
-            </button>
           </div>
         </motion.div>
       )}
-    </div>
+    </motion.div>
   );
 };
 

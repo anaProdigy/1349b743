@@ -17,8 +17,8 @@ module.exports = {
           dark: '#29323C',  // Deep slate for dark mode cards
         },
         primary: {
-          light: '#F86A61', // Vibrant coral for buttons and actions
-          dark: '#FF8A85',  // Brighter coral for dark mode
+          light: '#6998AB', // Change here
+          dark: '#3E8E7E',  // Brighter coral for dark mode
         },
         text: {
           primary: {

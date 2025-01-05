@@ -7,14 +7,14 @@ const Header = () => {
   const toggleSettings = () => setIsSettingsOpen(!isSettingsOpen);
 
   return (
-    <header className="flex items-center justify-between px-6 py-4 bg-white dark:bg-gray-900 shadow">
-      <h1 className="text-text-primary-light dark:text-text-primary-dark">
+    <header className="flex items-center justify-between px-6 py-4  dark:bg-card-dark  rounded-md">
+      <h1 className="text-text-primary-light dark:text-text-primary-dark text-xl font-bold">
         AIRCALL
       </h1>
       <button
         onClick={toggleSettings}
         aria-label="Settings"
-        className="text-gray-500 hover:text-gray-800 dark:text-gray-300 dark:hover:text-gray-100 transition-all"
+        className="text-text-secondary-light dark:text-text-secondary-dark hover:text-primary-light dark:hover:text-primary-dark transition-all"
       >
         <FiSettings className="h-6 w-6" />
       </button>

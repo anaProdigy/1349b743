@@ -9,11 +9,11 @@ function App() {
   const [activeTab, setActiveTab] = useState("all");
   
   return (
-    <div className="bg-background-light dark:bg-background-dark min-h-screen flex justify-center items-start py-10">
+    <div className="bg-background-light dark:bg-background-dark min-h-screen flex justify-center items-start md:py-10">
       <Toaster position="top-right" reverseOrder={false} />
-      <div className="bg-card-light dark:bg-card-dark shadow-lg rounded-lg w-full max-w-[70%]">
+      <div className="bg-card-light dark:bg-card-dark shadow-lg rounded-lg w-full md:max-w-[70%]">
         {/* Header */}
-        <div className=" px-4 py-3">
+        <div className=" ">
           <Header />
         </div>
 
