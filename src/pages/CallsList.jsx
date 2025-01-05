@@ -10,6 +10,7 @@ import {
 const CallsList = ({ activeTab }) => {
   const [calls, setCalls] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loadingArchive, setLoadingArchive] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -49,35 +50,38 @@ const CallsList = ({ activeTab }) => {
 
   const groupedCalls = groupCallsByDate();
 
-  //Refactor toats
+  //Refactor toasts
   const handleArchiveAll = async () => {
+    setLoadingArchive(true);
     try {
       for (const call of calls) {
         await updateCallArchiveStatus(call.id, true);
       }
       setCalls([]);
-         toast.success("All calls archived successfully!", {
-           position: "bottom-center",
-           autoClose: 3000, // 3 seconds
-           hideProgressBar: true,
-           closeOnClick: true,
-           pauseOnHover: false,
-           draggable: false,
-         });
+      toast.success("All calls archived successfully!", {
+        position: "bottom-center",
+        autoClose: 3000, // 3 seconds
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: false,
+      });
     } catch (error) {
-       toast.error("Failed to unarchive all calls. Please try again.", {
-         position: "bottom-center",
-         autoClose: 3000,
-         hideProgressBar: true,
-         closeOnClick: true,
-         pauseOnHover: false,
-         draggable: false,
-       });
-      console.error("Error archiving all calls:", error);
+      toast.error("Failed to unarchive all calls. Please try again.", {
+        position: "bottom-center",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: false,
+      });
+    } finally {
+      setLoadingArchive(false); 
     }
   };
 
   const handleUnarchiveAll = async () => {
+     setLoadingArchive(true);
     try {
       for (const call of calls) {
         await updateCallArchiveStatus(call.id, false);
@@ -92,15 +96,16 @@ const CallsList = ({ activeTab }) => {
         draggable: false,
       });
     } catch (error) {
-       toast.error("Failed to unarchive all calls. Please try again.", {
-         position: "bottom-center",
-         autoClose: 3000,
-         hideProgressBar: true,
-         closeOnClick: true,
-         pauseOnHover: false,
-         draggable: false,
-       });
-      console.error("Error unarchiving all calls:", error);
+      toast.error("Failed to unarchive all calls. Please try again.", {
+        position: "bottom-center",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: false,
+      });
+    } finally {
+      setLoadingArchive(false);
     }
   };
 
@@ -140,7 +145,12 @@ const CallsList = ({ activeTab }) => {
           onClick={activeTab === "all" ? handleArchiveAll : handleUnarchiveAll}
           className="flex items-center gap-2 px-6 py-1 rounded-lg font-semibold text-white bg-primary-light dark:bg-primary-dark hover:bg-hover-light dark:hover:bg-hover-dark transition-all shadow-md focus:outline-none focus:ring-2 focus:ring-primary-light dark:focus:ring-primary-dark focus:ring-offset-2 dark:focus:ring-offset-background-dark"
         >
-          {activeTab === "all" ? (
+          {loadingArchive ? (
+            <>
+              <span className="loader w-4 h-4 border-2 border-t-transparent border-white rounded-full animate-spin"></span>
+              {activeTab === "all" ? "Archiving..." : "Unarchiving..."}
+            </>
+          ) : activeTab === "all" ? (
             <>
               <FiArchive className="text-lg" />
               Archive All Calls
