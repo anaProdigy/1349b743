@@ -9,7 +9,7 @@ module.exports = {
     extend: {
       colors: {
         background: {
-          light: '#FAF4EF', // Softer warm cream
+          light: '#F0F4F9', // Softer warm cream
           dark: '#1F2933',  // Smoother charcoal
         },
         card: {

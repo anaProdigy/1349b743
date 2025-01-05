@@ -7,26 +7,23 @@ import Header from "./components/Header.jsx";
 import "./index.css";
 function App() {
   const [activeTab, setActiveTab] = useState("all");
-  const tabs = [
-    { title: "All Calls", value: "all" },
-    { title: "Archived Calls", value: "archived" },
-  ];
+  
   return (
-    <div className="bg-gray-100 min-h-screen flex justify-center items-start py-10">
+    <div className="bg-background-light dark:bg-background-dark min-h-screen flex justify-center items-start py-10">
       <Toaster position="top-right" reverseOrder={false} />
-      <div className="bg-white shadow-lg rounded-lg w-full max-w-md">
+      <div className="bg-card-light dark:bg-card-dark shadow-lg rounded-lg w-full max-w-[70%]">
         {/* Header */}
-        <div className="border-b border-gray-200 px-4 py-3">
+        <div className=" px-4 py-3">
           <Header />
         </div>
 
         {/* Tabs */}
-        <div className="border-b border-gray-200">
-          <Tabs tabs={tabs} activeTab={activeTab} setActiveTab={setActiveTab} />
-        </div>
+       
+          <Tabs activeTab={activeTab} setActiveTab={setActiveTab} />
+      
 
         {/* Content */}
-        <div className="p-4">
+        <div className="p-4 text-text-primary-light dark:text-text-primary-dark">
           <CallsList activeTab={activeTab} />
         </div>
       </div>
