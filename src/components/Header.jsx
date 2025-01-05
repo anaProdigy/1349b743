@@ -19,7 +19,7 @@ const Header = () => {
         <FiSettings className="h-6 w-6" />
       </button>
 
-      {/* Render Settings Drawer */}
+      {/* Settings Drawer */}
       {isSettingsOpen && <Settings onClose={toggleSettings} />}
     </header>
   );

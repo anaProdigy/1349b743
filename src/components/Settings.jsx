@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import toast from "react-hot-toast";
 const Settings = ({ onClose }) => {
   const { darkMode, toggleTheme } = useTheme();
-
+// Refactor toast
  const handleResetCalls = async () => {
    try {
      await resetCalls();
@@ -42,7 +42,7 @@ const Settings = ({ onClose }) => {
           animate={{ opacity: 0.5 }}
           exit={{ opacity: 0 }}
           className="fixed inset-0 z-40 bg-black dark:bg-black opacity-50"
-          onClick={onClose} // Close when clicking on the overlay
+          onClick={onClose} 
         />
 
         {/* Settings Drawer */}
@@ -53,7 +53,6 @@ const Settings = ({ onClose }) => {
           transition={{ type: "spring", stiffness: 300, damping: 30 }}
           className="fixed top-0 right-0 z-50 h-full w-full sm:w-80 bg-card-light dark:bg-card-dark shadow-lg flex flex-col p-6"
         >
-          {/* Drawer Header */}
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-lg font-semibold text-text-primary-light dark:text-text-primary-dark">
               Settings

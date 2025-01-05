@@ -1,5 +1,5 @@
 import { toast } from "react-toastify";
-
+//to do
 export const showToast = ({
   message,
   type = "success",
@@ -22,21 +22,4 @@ export const showToast = ({
     theme: mode,
     className,
   };
-
-  switch (type) {
-    case "success":
-      toast.success(message, config);
-      break;
-    case "error":
-      toast.error(message, config);
-      break;
-    case "info":
-      toast.info(message, config);
-      break;
-    case "warning":
-      toast.warn(message, config);
-      break;
-    default:
-      toast(message, config);
-  }
 };

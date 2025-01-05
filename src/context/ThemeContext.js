@@ -5,12 +5,10 @@ const ThemeContext = createContext();
 
 export const ThemeProvider = ({ children }) => {
   const [darkMode, setDarkMode] = useState(() => {
-    // Initialize theme from cookies
     return Cookies.get("theme") === "dark";
   });
 
   useEffect(() => {
-    // Apply the theme to the <html> element
     if (darkMode) {
       document.documentElement.classList.add("dark");
       Cookies.set("theme", "dark", { expires: 7 });
@@ -30,7 +28,6 @@ export const ThemeProvider = ({ children }) => {
   );
 };
 
-// Custom hook to use the ThemeContext
 export const useTheme = () => {
   const context = useContext(ThemeContext);
   if (!context) {

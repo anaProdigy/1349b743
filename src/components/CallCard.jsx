@@ -84,8 +84,7 @@ const CallCard = ({ call, onArchiveToggle }) => {
             onClick={(e) => {
               e.stopPropagation();
               onArchiveToggle(id, is_archived);
-              setIsHovered(false); // Reset hover state immediately after click
-              setTimeout(() => setIsHovered(true), 0); // Reapply hover to refresh icon
+              setIsHovered(false);
             }}
             className={`archive-button flex items-center gap-2 text-white px-3 py-2 rounded-full shadow-lg transition-transform ${
               is_archived
@@ -95,7 +94,6 @@ const CallCard = ({ call, onArchiveToggle }) => {
             style={{
               zIndex: 10,
             }}
-            aria-label={is_archived ? "Unarchive" : "Archive"}
             title={is_archived ? "Unarchive" : "Archive"}
           >
             {is_archived ? (
@@ -106,12 +104,15 @@ const CallCard = ({ call, onArchiveToggle }) => {
           </motion.button>
         ) : (
           <p className="text-sm text-text-secondary-light dark:text-text-secondary-dark">
-            {Math.ceil(duration / 60)} mins
+            {new Date(created_at).toLocaleTimeString("en-US", {
+              hour: "2-digit",
+              minute: "2-digit",
+              hour12: true,
+            })}
           </p>
         )}
       </div>
 
-      {/* Expanded Details */}
       {isExpanded && (
         <motion.div
           initial={{ height: 0 }}

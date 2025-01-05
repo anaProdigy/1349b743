@@ -1,29 +1,29 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    "./src/**/*.{js,jsx,ts,tsx}", // Adjust the path to match your project's structure
-    "./public/index.html", // Include your HTML files if they contain Tailwind classes
+    "./src/**/*.{js,jsx,ts,tsx}", 
+    "./public/index.html", 
   ],
   darkMode: 'class',
   theme: {
     extend: {
       colors: {
         background: {
-          light: '#F0F4F9', // Softer warm cream
+          light: '#F0F4F9', // Gray
           dark: '#1F2933',  // Smoother charcoal
         },
         card: {
-          light: '#FFFFFF', // White for cards in light mode
-          dark: '#29323C',  // Deep slate for dark mode cards
+          light: '#FFFFFF', // White 
+          dark: '#29323C',  // Deep slate 
         },
         primary: {
           light: '#6998AB', // Change here
-          dark: '#3E8E7E',  // Brighter coral for dark mode
+          dark: '#84DFFF',  // Brighter coral 
         },
         text: {
           primary: {
-            light: '#1E1E1E', // Darker gray for text in light mode
-            dark: '#ECECEC',  // Softer white for text in dark mode
+            light: '#1E1E1E', // Darker gray 
+            dark: '#ECECEC',  // Softer white 
           },
           secondary: {
             light: '#707070', // Neutral gray
@@ -36,25 +36,25 @@ module.exports = {
         },
         accent: {
           incoming: {
-            light: '#55D78A', // Vibrant green for incoming calls
-            dark: '#4CCB80',  // Muted green for dark mode
+            light: '#55D78A', // Vibrant green 
+            dark: '#4CCB80',  // Muted green 
           },
           missed: {
-            light: '#F7625E', // Bold red for missed calls
-            dark: '#FF6565',  // Brighter red for dark mode
+            light: '#F7625E', // Bold red 
+            dark: '#FF6565',  // Brighter 
           },
         },
         error: {
-          light: '#E63946', // Bold red for error/danger buttons
-          dark: '#FF4D5E',  // Brighter red for dark mode errors
+          light: '#E63946', // Bold red 
+          dark: '#FF4D5E',  // Brighter red 
         },
         button: {
-          light: '#F86A61', // Coral button background in light mode
-          dark: '#FF8A85',  // Bright coral for dark mode buttons
+          light: '#6998AB', 
+          dark: '#84DFFF',  
         },
         hover: {
-          light: '#F2756D', // Hover state for light mode buttons
-          dark: '#FF7F77',  // Hover state for dark mode buttons
+          light: '#507F97', 
+          dark: '#66C5FF',  
         },
       },
     },
