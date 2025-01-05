@@ -51,8 +51,23 @@ const CallsList = ({ activeTab }) => {
         await updateCallArchiveStatus(call.id, true);
       }
       setCalls([]);
-      toast.success("All calls archived successfully!");
+         toast.success("All calls archived successfully!", {
+           position: "bottom-center",
+           autoClose: 3000, // 3 seconds
+           hideProgressBar: true,
+           closeOnClick: true,
+           pauseOnHover: false,
+           draggable: false,
+         });
     } catch (error) {
+       toast.error("Failed to unarchive all calls. Please try again.", {
+         position: "bottom-center",
+         autoClose: 3000,
+         hideProgressBar: true,
+         closeOnClick: true,
+         pauseOnHover: false,
+         draggable: false,
+       });
       console.error("Error archiving all calls:", error);
     }
   };
@@ -63,64 +78,64 @@ const CallsList = ({ activeTab }) => {
         await updateCallArchiveStatus(call.id, false);
       }
       setCalls([]);
-      toast.success("All calls unarchived successfully!");
+      toast.success("All calls unarchived successfully!", {
+        position: "bottom-center",
+        autoClose: 3000, // 3 seconds
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: false,
+      });
     } catch (error) {
-      console.error("Error unarchiving all calls:", error);
-    }
-  };
-
-  // const handleArchiveToggle = async (id, isArchived) => {
-  //   try {
-  //     await updateCallArchiveStatus(id, !isArchived);
-  //     setCalls((prevCalls) => prevCalls.filter((call) => call.id !== id));
-  //   } catch (error) {
-  //     console.error(
-  //       `Error ${isArchived ? "unarchiving" : "archiving"} call with ID ${id}:`,
-  //       error
-  //     );
-  //   }
-  // };
-
-   const handleArchiveToggle = async (id, isArchived) => {
-     try {
-       await updateCallArchiveStatus(id, !isArchived); // Update the archive status on the backend
-       setCalls((prevCalls) => prevCalls.filter((call) => call.id !== id)); // Optimistically update the UI
-       toast.success(isArchived ? "Call unarchived." : "Call archived.", {
-         position: "bottom-center",
-         autoClose: 3000, // Close after 3 seconds
-         hideProgressBar: true,
-         closeOnClick: true,
-         pauseOnHover: false,
-         draggable: false,
-         theme: "colored",
-       });
-     } catch (error) {
-       console.error(
-         `Error ${
-           isArchived ? "unarchiving" : "archiving"
-         } call with ID ${id}:`,
-         error
-       );
-       toast.error("Something went wrong. Please try again.", {
+       toast.error("Failed to unarchive all calls. Please try again.", {
          position: "bottom-center",
          autoClose: 3000,
          hideProgressBar: true,
          closeOnClick: true,
          pauseOnHover: false,
          draggable: false,
-         theme: "colored",
        });
-     }
-   };
+      console.error("Error unarchiving all calls:", error);
+    }
+  };
+
+  const handleArchiveToggle = async (id, isArchived) => {
+    try {
+      await updateCallArchiveStatus(id, !isArchived);
+      setCalls((prevCalls) => prevCalls.filter((call) => call.id !== id));
+      toast.success(isArchived ? "Call unarchived." : "Call archived.", {
+        position: "bottom-center",
+        autoClose: 3000, // 3 seconds
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: false,
+      });
+    } catch (error) {
+        toast.error("Something went wrong. Please try again.", {
+          position: "bottom-center",
+          autoClose: 3000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: false,
+        });
+      console.error(
+        `Error ${isArchived ? "unarchiving" : "archiving"} call with ID ${id}:`,
+        error
+      );
+    }
+  };
+  
 
   return (
     <div className="p-4">
       <div className="flex justify-center items-center mb-6">
         <button
           onClick={activeTab === "all" ? handleArchiveAll : handleUnarchiveAll}
-          className="px-6 py-3 rounded-lg font-semibold text-white bg-primary-light dark:bg-primary-dark hover:bg-hover-light dark:hover:bg-hover-dark transition-all shadow-md focus:outline-none focus:ring-2 focus:ring-primary-light dark:focus:ring-primary-dark focus:ring-offset-2 dark:focus:ring-offset-background-dark"
+          className="px-6 py-1 rounded-lg font-semibold text-white bg-primary-light dark:bg-primary-dark hover:bg-hover-light dark:hover:bg-hover-dark transition-all shadow-md focus:outline-none focus:ring-2 focus:ring-primary-light dark:focus:ring-primary-dark focus:ring-offset-2 dark:focus:ring-offset-background-dark"
         >
-          {activeTab === "all" ? "Archive All" : "Unarchive All"}
+          {activeTab === "all" ? "Archive All Calls" : "Unarchive All Calls"}
         </button>
       </div>
 

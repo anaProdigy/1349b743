@@ -2,17 +2,35 @@ import React from "react";
 import { resetCalls } from "../api/utils";
 import { useTheme } from "../context/ThemeContext";
 import { motion, AnimatePresence } from "framer-motion";
+import toast from "react-hot-toast";
 const Settings = ({ onClose }) => {
   const { darkMode, toggleTheme } = useTheme();
 
-  const handleResetCalls = async () => {
-    try {
-      await resetCalls();
-      alert("Calls reset successfully!");
-    } catch (error) {
-      console.error("Failed to reset calls:", error);
-    }
-  };
+ const handleResetCalls = async () => {
+   try {
+     await resetCalls();
+     toast.success("Calls reset successfully!", {
+       position: "bottom-center",
+       autoClose: 3000,
+       hideProgressBar: true,
+       closeOnClick: true,
+       pauseOnHover: false,
+       draggable: false,
+       theme: "colored",
+     });
+   } catch (error) {
+     console.error("Failed to reset calls:", error);
+     toast.error("Failed to reset calls. Please try again.", {
+       position: "bottom-center",
+       autoClose: 3000,
+       hideProgressBar: true,
+       closeOnClick: true,
+       pauseOnHover: false,
+       draggable: false,
+       theme: "colored",
+     });
+   }
+ };
 
   return (
      
