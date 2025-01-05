@@ -2,6 +2,10 @@ import React, { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import CallCard from "../components/CallCard";
 import { fetchActivities, updateCallArchiveStatus } from "../api/utils";
+import {
+  FiArchive,
+  FiRefreshCw,
+} from "react-icons/fi";
 
 const CallsList = ({ activeTab }) => {
   const [calls, setCalls] = useState([]);
@@ -133,9 +137,19 @@ const CallsList = ({ activeTab }) => {
       <div className="flex justify-center items-center mb-6">
         <button
           onClick={activeTab === "all" ? handleArchiveAll : handleUnarchiveAll}
-          className="px-6 py-1 rounded-lg font-semibold text-white bg-primary-light dark:bg-primary-dark hover:bg-hover-light dark:hover:bg-hover-dark transition-all shadow-md focus:outline-none focus:ring-2 focus:ring-primary-light dark:focus:ring-primary-dark focus:ring-offset-2 dark:focus:ring-offset-background-dark"
+          className="flex items-center gap-2 px-6 py-1 rounded-lg font-semibold text-white bg-primary-light dark:bg-primary-dark hover:bg-hover-light dark:hover:bg-hover-dark transition-all shadow-md focus:outline-none focus:ring-2 focus:ring-primary-light dark:focus:ring-primary-dark focus:ring-offset-2 dark:focus:ring-offset-background-dark"
         >
-          {activeTab === "all" ? "Archive All Calls" : "Unarchive All Calls"}
+          {activeTab === "all" ? (
+            <>
+              <FiArchive className="text-lg" />
+              Archive All Calls
+            </>
+          ) : (
+            <>
+              <FiRefreshCw className="text-lg" />
+              Unarchive All Calls
+            </>
+          )}
         </button>
       </div>
 
