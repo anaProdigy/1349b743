@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 
 const ThemeToggle = () => {
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(
+    document.documentElement.classList.contains("dark")
+  );
 
   useEffect(() => {
     const root = window.document.documentElement;
@@ -15,7 +17,7 @@ const ThemeToggle = () => {
   return (
     <button
       onClick={() => setIsDarkMode((prev) => !prev)}
-      className="py-2 px-4 rounded bg-button-light dark:bg-button-dark text-lightText dark:text-darkText hover:bg-hover-light dark:hover:bg-hover-dark"
+      className="py-2 px-4 rounded bg-primary-light dark:bg-primary-dark text-text-primary-light dark:text-text-primary-dark hover:bg-primary-light/80 dark:hover:bg-primary-dark/80"
     >
       {isDarkMode ? "Light Mode" : "Dark Mode"}
     </button>
